@@ -48,12 +48,9 @@ exports.readDiary = async(req, res) => {
 
 exports.updateDiary = async(req, res) => {
     const userId = req.user.id
-    const userdetails = await User.findById({userId})
-    const diaryId = userdetails.diaryDetails
+    const diaryDetails = await Diary.find({user: userId})
 
-    const diarydetails = await Diary.findById({_id: diaryId})
-
-    if(!diarydetails) {
+    if(!diaryDetails) {
         return res.status(500).json({
             success: false,
             message: "diary not found"
@@ -69,7 +66,7 @@ exports.updateDiary = async(req, res) => {
         location
     }
 
-    const updated_diary = await Diary.findById({userId},{
+    const updated_diary = await Diary.find({user: userId},{
         $set: {updatedDiary}
     })
 
@@ -83,8 +80,8 @@ exports.updateDiary = async(req, res) => {
 
 exports.deleteDiary = async(req, res) => {
     const userId = req.user.id
-    const userdetails = await User.findById({_id: userId})
-    const diaryId = userdetails.diaryDetails
+    const userdetails = await User.findById({user: userId})
+    const diaryId = userdetails._id
     
     
     const diary = await Diary.findByIdAndDelete({_id:diaryId})
