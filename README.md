@@ -1,6 +1,9 @@
-download code or clone
-install express 'npm i express'
-run at postman or any other testing tools
+view readme file in the code form for better understanding
+
+
+1. download code or clone
+2. install express 'npm i express'
+3. run at postman or any other testing tools
 
 some API request and responses ---
 
