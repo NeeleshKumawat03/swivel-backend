@@ -35,19 +35,12 @@ exports.signUp = async(req, res) => {
             contactNumber: null
         });
 
-        const diaryDetails = await Diary.create({
-            title: null,
-            description: null,
-            date: null,
-            location: null
-        });
     
         const user = await User.create({
             name,
             email, 
             password: hashedPassword,
             additionalDetails: profileDetails._id,
-            diaryDetails: diaryDetails._id
         })
 
         return res.status(200).json({

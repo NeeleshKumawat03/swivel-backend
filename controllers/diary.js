@@ -3,7 +3,7 @@ const User = require('../models/user')
 
 exports.createDiary = async(req, res) => {
     const {title, description, date, location} = req.body
-
+    const userId = req.user.id
     if(!title || !description || !date || !location) {
         return res.status(500).json({
             success: false,
@@ -12,6 +12,7 @@ exports.createDiary = async(req, res) => {
     }
 
     const diaryEntry = await Diary.create({
+        user: userId,
         title,
         description,
         date,
@@ -27,14 +28,10 @@ exports.createDiary = async(req, res) => {
 
 exports.readDiary = async(req, res) => {
     const userId = req.user.id
+    const diaryDetails = await Diary.find({user: userId})
 
-    console.log(userId)
-    const userdetails = await User.findById({userId})
-    const diaryId = userdetails.diaryDetails
 
-    const diarydetails = await Diary.findById({_id: diaryId})
-
-    if(!diarydetails) {
+    if(!diaryDetails) {
         return res.status(500).json({
             success: false,
             message: "No diary created yet"
@@ -44,7 +41,7 @@ exports.readDiary = async(req, res) => {
     res.status(200).json({
         success: true,
         message: "All diary fetched",
-        diarydetails
+        diaryDetails
     })
 
 }
@@ -72,7 +69,7 @@ exports.updateDiary = async(req, res) => {
         location
     }
 
-    const updated_diary = await diary.findById({userId},{
+    const updated_diary = await Diary.findById({userId},{
         $set: {updatedDiary}
     })
 
